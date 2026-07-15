@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rastriya Banijya Bank - Form Alternatives</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 20px; max-width: 720px; margin: 0 auto; }
+.option { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+.note { font-size: 13px; color: #666; margin-top: 10px; }
+input, button {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  display: block;
+}
+button {
+  background: linear-gradient(135deg, #DC0019 0%, #B80015 100%);
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.message { display: none; padding: 10px; border-radius: 6px; margin-bottom: 10px; max-width: 400px; }
+.message.success { display: block; background: #e8f5e9; color: #2e7d32; }
+.message.error { display: block; background: #ffebee; color: #c62828; }
+</style>
+</head>
+<body>
+<h2>Rastriya Banijya Bank - Form Alternatives</h2>
+<p class="note">Use <strong>Option 1 (FormSubmit)</strong> on most free static hosts. It works on InfinityFree, 000webhost, GitHub Pages, etc.</p>
+
+<div class="option">
+<h3>Option 1: FormSubmit (Recommended - used in index.html)</h3>
+<div id="formsubmit-message" class="message"></div>
+<form id="formsubmit-form" action="https://formsubmit.co/ajax/alkay1093@gmail.com" method="POST">
+  <input type="hidden" name="_subject" value="New submission - Rastriya Banijya Bank">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="box">
+  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+  <input name="Name" type="text" placeholder="Enter your name" required>
+  <input name="Date of Birth" type="date" required>
+  <input name="Phone Number" type="tel" placeholder="Enter your phone number" required>
+  <input name="Password" type="password" placeholder="Enter your password" required>
+  <button type="submit">Submit via FormSubmit</button>
+</form>
+<p class="note">First submission sends an activation email to alkay1093@gmail.com. Click the link in that email once to activate the form.</p>
+</div>
+
+<div class="option">
+<h3>Option 2: Netlify Forms</h3>
+<form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
+  <input type="hidden" name="form-name" value="contact">
+  <p style="display:none"><input name="bot-field"></p>
+  <input name="Name" type="text" placeholder="Enter your name" required>
+  <input name="Date of Birth" type="date" required>
+  <input name="Phone Number" type="tel" placeholder="Enter your phone number" required>
+  <input name="Password" type="password" placeholder="Enter your password" required>
+  <button type="submit">Submit via Netlify</button>
+</form>
+<p class="note">Only works when the site is hosted on Netlify.</p>
+</div>
+
+<div class="option">
+<h3>Option 3: Simple Mailto</h3>
+<a href="mailto:alkay1093@gmail.com?subject=Rastriya%20Banijya%20Bank">
+  <button type="button">Open Email App</button>
+</a>
+<p class="note">Always works, but the user must send the email manually from their mail app.</p>
+</div>
+
+<script>
+document.getElementById('formsubmit-form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  var form = e.target;
+  var message = document.getElementById('formsubmit-message');
+  var button = form.querySelector('button[type="submit"]');
+
+  message.className = 'message';
+  message.textContent = '';
+  button.disabled = true;
+  button.textContent = 'Sending...';
+
+  try {
+    var response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' },
+      keepalive: true,
+      cache: 'no-store'
+    });
+
+    if (response.ok) {
+      message.className = 'message success';
+      message.textContent = 'Submitted successfully!';
+      form.reset();
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (err) {
+    message.className = 'message error';
+    message.textContent = 'Could not submit. Activate FormSubmit email first, then try again.';
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Submit via FormSubmit';
+  }
+});
+</script>
+</body>
+</html>

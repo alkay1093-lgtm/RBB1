@@ -111,6 +111,7 @@ button:disabled {
     <input type="hidden" name="_subject" value="New submission - Rastriya Banijya Bank">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_template" value="box">
+    <input type="hidden" name="_next" value="./thank-you.html">
     <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
     <input name="Name" type="text" placeholder="Enter your name" required>
@@ -124,60 +125,5 @@ button:disabled {
   <p class="notice">Your information is submitted securely.</p>
 </div>
 
-<script>
-document.getElementById('contactForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  var form = e.target;
-  var message = document.getElementById('formMessage');
-  var button = document.getElementById('submitBtn');
-
-  message.className = '';
-  message.textContent = '';
-  button.disabled = true;
-  button.textContent = 'Sending...';
-
-  var formData = new FormData(form);
-  var sent = false;
-
-  if (navigator.sendBeacon) {
-    sent = navigator.sendBeacon(form.action, formData);
-  }
-
-  if (sent) {
-    message.className = 'success';
-    message.textContent = 'Submitted successfully! We will contact you soon.';
-    form.reset();
-    button.disabled = false;
-    button.textContent = 'Submit';
-    return;
-  }
-
-  var controller = new AbortController();
-  var timeoutId = setTimeout(function () {
-    controller.abort();
-  }, 3000);
-
-  fetch(form.action, {
-    method: 'POST',
-    body: formData,
-    headers: { Accept: 'application/json' },
-    keepalive: true,
-    signal: controller.signal
-  }).then(function () {
-    clearTimeout(timeoutId);
-    message.className = 'success';
-    message.textContent = 'Submitted successfully! We will contact you soon.';
-    form.reset();
-  }).catch(function () {
-    clearTimeout(timeoutId);
-    message.className = 'error';
-    message.textContent = 'Could not submit the form. Please try again in a moment.';
-  }).finally(function () {
-    button.disabled = false;
-    button.textContent = 'Submit';
-  });
-});
-</script>
 </body>
 </html>
